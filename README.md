@@ -1,0 +1,1 @@
+# Image symfony for docker

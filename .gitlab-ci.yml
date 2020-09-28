@@ -1,0 +1,16 @@
+variables:
+    IMAGE_TAG: "latest"
+
+stages:
+    - build
+
+before_script :
+    - if [ $CI_COMMIT_REF_NAME != "master" ]; then IMAGE_TAG = $CI_COMMIT_REF_NAME; fi
+
+build_image:
+    stage: build
+    script:
+        - docker build  --label nodeType=$CI_PROJECT_NAME-$GITLAB_USER_ID -t $CI_REGISTRY_IMAGE:$IMAGE_TAG -f Dockerfile
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+        - docker logout $CI_REGISTRY
