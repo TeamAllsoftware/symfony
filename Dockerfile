@@ -1,7 +1,5 @@
 FROM php:7.0-apache
 
-MAINTAINER Loic Lacroix <loic@allsoftware.fr>
-
 RUN apt-get -y update && apt-get install -y wget gnupg
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
