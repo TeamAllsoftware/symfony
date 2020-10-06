@@ -54,4 +54,4 @@ RUN a2enmod rewrite
 
 RUN mkdir /root/.ssh
 
-RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apache2/sites-available/000-default.conf
+RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/api\/public/" /etc/apache2/sites-available/000-default.conf
