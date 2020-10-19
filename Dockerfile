@@ -1,9 +1,9 @@
 FROM php:7.3-apache
 
-RUN apt-get -y update && apt-get install -y wget gnupg npm \
-        libmagickwand-dev --no-install-recommends
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get -y update && apt-get install -y wget gnupg
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -23,14 +23,14 @@ libxml2-dev \
 php-soap \
 yarn \
 && pecl install apcu \
-&& pecl install imagick \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
 && docker-php-ext-install soap \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
 && docker-php-ext-install -j$(nproc) gmp \
-zip \
-opcache \
-&& docker-php-ext-enable imagick
+opcache
+
+RUN apt-get install -y zlib1g-dev libicu-dev g++
+
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
