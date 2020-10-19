@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.3-apache
 
 RUN apt-get -y update && apt-get install -y wget gnupg npm \
         libmagickwand-dev --no-install-recommends
