@@ -1,7 +1,6 @@
 FROM php:7.4-apache
 
-RUN apt-get -y update && apt-get install -y wget gnupg npm \
-        libmagickwand-dev --no-install-recommends
+RUN apt-get -y update && apt-get install -y wget gnupg npm
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
@@ -23,14 +22,17 @@ libxml2-dev \
 php-soap \
 yarn \
 && pecl install apcu \
-&& pecl install imagick \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
 && docker-php-ext-install soap \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
 && docker-php-ext-install -j$(nproc) gmp \
-zip \
-opcache \
-&& docker-php-ext-enable imagick
+opcache
+
+RUN apt-get install -y zlib1g-dev libicu-dev g++
+
+RUN wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+RUN tar vxf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+RUN cp wkhtmltox/bin/wk* /usr/local/bin/
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
@@ -43,7 +45,6 @@ RUN yes | pecl install xdebug \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_log='/tmp/xdebug.log'" >> /usr/local/etc/php/conf.d/xdebug.ini \
 	&& echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
 
 RUN mkdir -p /var/lib/php/sessions && chown -R www-data.www-data /var/lib/php/sessions
@@ -52,6 +53,4 @@ RUN mkdir -p /tmp/symfony && chown -R www-data.www-data /tmp/symfony
 
 RUN a2enmod rewrite
 
-RUN mkdir /root/.ssh
-
-RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/api\/public/" /etc/apache2/sites-available/000-default.conf
+RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apache2/sites-available/000-default.conf
