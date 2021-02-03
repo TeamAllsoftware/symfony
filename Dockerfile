@@ -37,7 +37,7 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
-RUN yes | pecl install xdebug \
+RUN yes | pecl install xdebug-2.9.8 \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
@@ -58,3 +58,6 @@ RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apach
 
 COPY xdebug_state.sh /usr/bin/xdebug_state
 RUN chmod +x /usr/bin/xdebug_state
+
+RUN  wget https://get.symfony.com/cli/installer -O - | bash
+RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
