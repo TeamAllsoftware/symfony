@@ -58,3 +58,6 @@ RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apach
 
 COPY xdebug_state.sh /usr/bin/xdebug_state
 RUN chmod +x /usr/bin/xdebug_state
+
+RUN  wget https://get.symfony.com/cli/installer -O - | bash
+RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
