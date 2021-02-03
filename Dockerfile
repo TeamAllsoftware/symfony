@@ -61,3 +61,7 @@ RUN chmod +x /usr/bin/xdebug_state
 
 RUN  wget https://get.symfony.com/cli/installer -O - | bash
 RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+
+RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
+    --with-png-dir
+RUN docker-php-ext-install gd
