@@ -61,3 +61,20 @@ RUN chmod +x /usr/bin/xdebug_state
 
 RUN  wget https://get.symfony.com/cli/installer -O - | bash
 RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+
+RUN apt-get update -y && apt-get install -y \
+    libfontconfig1 \
+    libxrender1 \
+    libwebp-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev
+
+RUN apt-get update && apt-get install -y
+
+RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
+    --with-png-dir
+RUN docker-php-ext-install gd
+
+RUN apt install -y python3-pip
+
+RUN pip3 install awsebcli
