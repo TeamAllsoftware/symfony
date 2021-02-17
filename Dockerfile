@@ -77,5 +77,6 @@ RUN docker-php-ext-install gd
 
 RUN \
   apt-get update -y && \
+  apt-get install -y python && \
   apt-get install -y python-pip && \
   pip install awsebcli
