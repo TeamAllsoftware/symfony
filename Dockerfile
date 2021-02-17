@@ -76,6 +76,6 @@ RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
 RUN docker-php-ext-install gd
 
 RUN \
-  apk update && \
-  apk add git python py-pip && \
+  apt-get update && \
+  apt-get add python py-pip && \
   pip install awsebcli
