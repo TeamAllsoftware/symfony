@@ -7,6 +7,8 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
+RUN curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | bash
+
 RUN rm /etc/apt/preferences.d/no-debian-php && \
 apt-get -y update && apt-get install -y \
 git \
@@ -21,7 +23,9 @@ libxrender1 \
 libxml2-dev \
 php-soap \
 yarn \
-&& pecl install apcu \
+gitlab-runner
+
+RUN pecl install apcu \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
 && docker-php-ext-install soap \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
