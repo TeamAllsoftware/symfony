@@ -40,12 +40,6 @@ RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
 RUN yes | pecl install xdebug-2.9.8 \
-    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_log='/tmp/xdebug.log'" >> /usr/local/etc/php/conf.d/xdebug.ini \
 	&& echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
 
 RUN mkdir -p /var/lib/php/sessions && chown -R www-data.www-data /var/lib/php/sessions
@@ -60,17 +54,21 @@ RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apach
 
 COPY xdebug_state.sh /usr/bin/xdebug_state
 RUN chmod +x /usr/bin/xdebug_state
+ENV xdebugRemoteMachine=${xdebugRemoteMachine:-""}
+ENV userPrefixPort=${userPrefixPort:-""}
 
 RUN  wget https://get.symfony.com/cli/installer -O - | bash
 RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 RUN apt-get update -y && apt-get install -y \
+    nano \
     libfontconfig1 \
     libxrender1 \
     libwebp-dev \
     libjpeg62-turbo-dev \
     libpng-dev
 
-RUN apt install -y python3-pip
+RUN apt install -y python3-pip python3-dev libffi-dev
 
-RUN pip3 install awsebcli
+RUN pip3 install awsebcli --upgrade --user
+ENV PATH=~/.local/bin:$PATH
