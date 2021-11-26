@@ -23,11 +23,13 @@ libxrender1 \
 libxml2-dev \
 php-soap \
 yarn \
-gitlab-runner
+gitlab-runner \
+libz-dev libzip-dev
 
-RUN pecl install apcu \
+RUN pecl install apcu zlib \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
 && docker-php-ext-install soap \
+&& docker-php-ext-install zip \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
 && docker-php-ext-install -j$(nproc) gmp \
 opcache
