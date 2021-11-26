@@ -24,17 +24,24 @@ libxml2-dev \
 php-soap \
 yarn \
 gitlab-runner \
-libz-dev libzip-dev
+libz-dev libzip-dev \
+nano \
+libfontconfig1 \
+libxrender1 \
+libwebp-dev \
+libjpeg62-turbo-dev \
+libpng-dev \
+zlib1g-dev \
+libicu-dev \
+g++
+
+RUN docker-php-ext-configure gd
 
 RUN pecl install apcu zlib \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
-&& docker-php-ext-install soap \
-&& docker-php-ext-install zip \
+&& docker-php-ext-install soap zip gd \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
-&& docker-php-ext-install -j$(nproc) gmp \
-opcache
-
-RUN apt-get install -y zlib1g-dev libicu-dev g++
+&& docker-php-ext-install -j$(nproc) gmp opcache
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
@@ -61,14 +68,6 @@ ENV userPrefixPort=${userPrefixPort:-""}
 
 RUN  wget https://get.symfony.com/cli/installer -O - | bash
 RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-
-RUN apt-get update -y && apt-get install -y \
-    nano \
-    libfontconfig1 \
-    libxrender1 \
-    libwebp-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev
 
 RUN apt install -y python3-pip python3-dev libffi-dev
 
