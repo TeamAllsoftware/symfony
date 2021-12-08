@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.0-apache
 
 RUN apt-get -y update && apt-get install -y wget gnupg
 
@@ -23,7 +23,7 @@ libxrender1 \
 libxml2-dev \
 php-soap \
 yarn \
-gitlab-runner \
+# gitlab-runner \
 libz-dev libzip-dev \
 nano \
 libfontconfig1 \
@@ -48,7 +48,7 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
-RUN yes | pecl install xdebug-2.9.8 \
+RUN yes | pecl install xdebug \
 	&& echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
 
 RUN mkdir -p /var/lib/php/sessions && chown -R www-data.www-data /var/lib/php/sessions
