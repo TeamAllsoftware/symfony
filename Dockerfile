@@ -21,6 +21,7 @@ nodejs \
 libfontconfig1 \
 libxrender1 \
 libxml2-dev \
+libxslt-dev \
 php-soap \
 yarn \
 # gitlab-runner \
@@ -36,10 +37,11 @@ libicu-dev \
 g++
 
 RUN docker-php-ext-configure gd
+RUN docker-php-ext-configure xsl
 
 RUN pecl install apcu zlib \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
-&& docker-php-ext-install soap zip gd \
+&& docker-php-ext-install soap zip gd xsl \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
 && docker-php-ext-install -j$(nproc) gmp opcache
 
