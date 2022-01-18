@@ -1,4 +1,4 @@
-FROM php:8.0-apache
+FROM php:8.0-apache-buster
 
 RUN apt-get -y update && apt-get install -y wget gnupg
 
@@ -24,7 +24,7 @@ libxml2-dev \
 libxslt-dev \
 php-soap \
 yarn \
-# gitlab-runner \
+gitlab-runner \
 libz-dev libzip-dev \
 nano \
 libfontconfig1 \
@@ -72,6 +72,6 @@ RUN  wget https://get.symfony.com/cli/installer -O - | bash
 RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 RUN apt install -y python3-pip python3-dev libffi-dev
-
-RUN pip3 install awsebcli --upgrade --user
 ENV PATH=~/.local/bin:$PATH
+RUN pip3 install awsebcli --upgrade --user
+
