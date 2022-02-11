@@ -41,7 +41,7 @@ RUN docker-php-ext-configure xsl
 
 RUN pecl install apcu zlib \
 && docker-php-ext-install -j$(nproc) pdo_mysql \
-&& docker-php-ext-install soap zip gd xsl \
+&& docker-php-ext-install soap zip gd xsl intl \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
 && docker-php-ext-install -j$(nproc) gmp opcache
 
