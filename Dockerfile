@@ -32,11 +32,12 @@ libxrender1 \
 libwebp-dev \
 libjpeg62-turbo-dev \
 libpng-dev \
+libfreetype6-dev \
 zlib1g-dev \
 libicu-dev \
 g++
 
-RUN docker-php-ext-configure gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-configure xsl
 
 RUN pecl install apcu zlib \
