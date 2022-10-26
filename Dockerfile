@@ -1,8 +1,8 @@
-FROM php:8.0-apache-buster
+FROM php:8.1-apache-buster
 
 RUN apt-get -y update && apt-get install -y wget gnupg
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -69,10 +69,11 @@ RUN chmod +x /usr/bin/xdebug_state
 ENV xdebugRemoteMachine=${xdebugRemoteMachine:-""}
 ENV userPrefixPort=${userPrefixPort:-""}
 
-RUN  wget https://get.symfony.com/cli/installer -O - | bash
-RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
+RUN apt install symfony-cli -y
 
 RUN apt install -y python3-pip python3-dev libffi-dev
 ENV PATH=~/.local/bin:$PATH
+RUN pip3 install --upgrade pip
 RUN pip3 install awsebcli --upgrade --user
 
