@@ -37,7 +37,7 @@ zlib1g-dev \
 libicu-dev \
 g++
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp
 RUN docker-php-ext-configure xsl
 
 RUN pecl install apcu zlib \
@@ -76,4 +76,3 @@ RUN apt install -y python3-pip python3-dev libffi-dev
 ENV PATH=~/.local/bin:$PATH
 RUN pip3 install --upgrade pip
 RUN pip3 install awsebcli --upgrade --user
-
