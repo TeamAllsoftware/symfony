@@ -46,6 +46,9 @@ RUN pecl install apcu zlib \
 && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
 && docker-php-ext-install -j$(nproc) gmp opcache
 
+RUN docker-php-ext-configure exif --enable-exif
+RUN docker-php-ext-install exif
+
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
