@@ -4,7 +4,7 @@ FROM php:8.1-apache-bullseye
 RUN apt-get -y update && apt-get install -y wget gnupg
 
 # Node
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 
 # Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
