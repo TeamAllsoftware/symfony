@@ -69,6 +69,15 @@ RUN apt install -y python3-pip python3-dev libffi-dev
 ENV PATH=~/.local/bin:$PATH
 RUN pip3 install --upgrade pip
 
+# WeasyPrint
+# https://doc.courtbouillon.org/weasyprint/v52.5/install.html#debian-ubuntu
+RUN apt-get install -y build-essential python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
+RUN pip install weasyprint==52.5
+RUN ln /usr/local/bin/weasyprint /usr/bin
+
+# Libreoffice
+RUN apt-get install -y libreoffice
+
 # XDebug
 RUN yes | pecl install xdebug \
 	&& echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
@@ -82,12 +91,6 @@ ENV userPrefixPort=${userPrefixPort:-""}
 # Symfony CLI
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN apt install symfony-cli -y
-
-# WeasyPrint
-# https://doc.courtbouillon.org/weasyprint/v52.5/install.html#debian-ubuntu
-RUN apt-get install -y build-essential python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
-RUN pip install weasyprint==52.5
-RUN ln /usr/local/bin/weasyprint /usr/bin
 
 # AWS eb-cli
 RUN pip3 install awsebcli --upgrade --user
