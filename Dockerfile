@@ -1,4 +1,4 @@
-FROM php:8.1-apache-bullseye
+FROM php:8.2-apache-buster
 
 # wget & gnupg
 RUN apt-get -y update && apt-get install -y wget gnupg
