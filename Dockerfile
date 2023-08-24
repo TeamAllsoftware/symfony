@@ -28,6 +28,7 @@ libxml2-dev \
 libxslt-dev \
 php-soap \
 yarn \
+jq \
 gitlab-runner \
 libz-dev libzip-dev \
 nano \
