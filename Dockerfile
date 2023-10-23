@@ -1,4 +1,4 @@
-FROM php:8.2-apache-buster
+FROM php:8.2-apache-bullseye
 
 # wget & gnupg
 RUN apt-get -y update && apt-get install -y wget gnupg ca-certificates curl
