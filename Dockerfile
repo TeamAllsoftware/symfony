@@ -1,7 +1,7 @@
-FROM php:8.2-apache-bullseye
+FROM php:8.2-apache-bookworm
 
 # wget & gnupg
-RUN apt-get -y update && apt-get install -y wget gnupg
+RUN apt -y update && apt install -y wget gnupg
 
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
@@ -14,7 +14,7 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | bash
 
 RUN rm /etc/apt/preferences.d/no-debian-php && \
-apt-get -y update && apt-get install -y \
+apt -y update && apt install -y \
 git \
 zip \
 unzip \
@@ -65,19 +65,12 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
-# Python3 => pip
-RUN apt install -y python3-pip python3-dev libffi-dev
-ENV PATH=~/.local/bin:$PATH
-RUN pip3 install --upgrade pip
-
 # WeasyPrint
-# https://doc.courtbouillon.org/weasyprint/v52.5/install.html#debian-ubuntu
-RUN apt-get install -y build-essential python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
-RUN pip install weasyprint==52.5
-RUN ln /usr/local/bin/weasyprint /usr/bin
+# https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#debian-11
+RUN apt install -y weasyprint
 
 # Libreoffice
-RUN apt-get install -y libreoffice
+RUN apt install -y libreoffice
 
 # XDebug
 RUN yes | pecl install xdebug \
@@ -89,12 +82,20 @@ RUN chmod +x /usr/bin/xdebug_state
 ENV xdebugRemoteMachine=${xdebugRemoteMachine:-""}
 ENV userPrefixPort=${userPrefixPort:-""}
 
+# Python3 => Python
+RUN apt install -y python3-virtualenv python-is-python3
+
 # Symfony CLI
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN apt install symfony-cli -y
 
 # AWS eb-cli
-RUN pip3 install awsebcli --upgrade --user
+RUN git clone https://github.com/aws/aws-elastic-beanstalk-cli-setup.git \
+    && python ./aws-elastic-beanstalk-cli-setup/scripts/ebcli_installer.py
+ENV PATH="/root/.ebcli-virtual-env/executables:$PATH"
+
+# AWS cli
+RUN apt install -y awscli
 
 # Creation dossier sessions
 RUN mkdir -p /var/lib/php/sessions && chown -R www-data.www-data /var/lib/php/sessions
@@ -102,7 +103,5 @@ RUN mkdir -p /var/lib/php/sessions && chown -R www-data.www-data /var/lib/php/se
 RUN mkdir -p /tmp/symfony && chown -R www-data.www-data /tmp/symfony
 
 RUN a2enmod rewrite
-
-RUN mkdir /root/.ssh
 
 RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apache2/sites-available/000-default.conf
