@@ -104,4 +104,14 @@ RUN mkdir -p /tmp/symfony && chown -R www-data.www-data /tmp/symfony
 
 RUN a2enmod rewrite
 
+# Firefox browser
+RUN apt-get update
+RUN apt install firefox-esr -y
+
+# Geckodriver pour Firefox
+ARG GECKODRIVER_VERSION=0.28.0
+RUN wget -q https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz; \
+    tar -zxf geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz -C /usr/bin; \
+    rm geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz
+
 RUN sed -i "s/DocumentRoot .*/DocumentRoot \/var\/www\/html\/public/" /etc/apache2/sites-available/000-default.conf
