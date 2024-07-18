@@ -1,4 +1,4 @@
-FROM php:8.2-apache-bookworm
+FROM php:8.1-apache-bullseye
 
 # wget & gnupg
 RUN apt -y update && apt install -y wget gnupg
