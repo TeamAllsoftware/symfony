@@ -66,9 +66,6 @@ RUN chmod +x /usr/bin/xdebug_state
 ENV xdebugRemoteMachine=${xdebugRemoteMachine:-""}
 ENV userPrefixPort=${userPrefixPort:-""}
 
-RUN  wget https://get.symfony.com/cli/installer -O - | bash
-RUN  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
-
 RUN apt install -y python3-pip python3-dev libffi-dev
 
 RUN pip3 install awsebcli --upgrade --user
