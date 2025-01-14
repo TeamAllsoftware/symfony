@@ -3,8 +3,8 @@ FROM php:8.1-apache-bookworm
 # wget & gnupg
 RUN apt -y update && apt install -y wget gnupg
 
-# Node
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+# Node 20
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 
 # Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
