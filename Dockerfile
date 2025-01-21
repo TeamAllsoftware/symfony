@@ -73,7 +73,8 @@ RUN apt install -y weasyprint
 RUN apt install -y libreoffice
 
 # XDebug
-RUN yes | pecl install xdebug \
+# Forced to 3.2.2 due to https://bugs.xdebug.org/view.php?id=2253#c6894
+RUN yes | pecl install xdebug-3.2.2 \
 	&& echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini
 
 # xdebug_state
